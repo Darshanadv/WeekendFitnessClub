@@ -8,6 +8,7 @@ package weekendfitnessclub;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -20,6 +21,7 @@ public class FitnessController {
     private final List<FitnessLesson> FitLessList;
     private final List<FitnessLessonAvailable> FitLessAvailableList;
     private final List<Review> ReviewList;
+    private Customer selectedCustomer;
 
     public FitnessController() {
 
@@ -32,8 +34,12 @@ public class FitnessController {
         createFitnessLesson(); //create 6 Fitness Lesson
         createFitnessLessonAvailable(); // create 8 weeends of timetable (32 lessons)
         createReviewList(); // create predefine review list
+
+        // by default first customer will be selected
+        selectedCustomer = this.CusList.get(0);
     }
 
+    // create predefine data start
     private void createCustomer() {
         CusList.add(new Customer(1, "Darshan"));
         CusList.add(new Customer(2, "Maya"));
@@ -52,15 +58,6 @@ public class FitnessController {
     }
 
     private void createFitnessLessonAvailable() {
-        // 29, 30 - April
-        // 6, 7 - May
-        // 13, 14
-        // 20, 21
-        // 27, 28
-        // 3, 4 - June
-        // 10, 11
-        // 17, 18
-        
         // 1st
         FitLessAvailableList.add(new FitnessLessonAvailable(1, FitLessList.get(0), new Date(2023, 5, 29)));
         FitLessAvailableList.add(new FitnessLessonAvailable(2, FitLessList.get(2), new Date(2023, 5, 29)));
@@ -102,12 +99,59 @@ public class FitnessController {
         FitLessAvailableList.add(new FitnessLessonAvailable(31, FitLessList.get(3), new Date(2023, 7, 18)));
         FitLessAvailableList.add(new FitnessLessonAvailable(32, FitLessList.get(4), new Date(2023, 7, 18)));
     }
-    
+
     private void createReviewList() {
         ReviewList.add(new Review(1, "Very dissatisfied"));
         ReviewList.add(new Review(2, "Dissatisfied"));
         ReviewList.add(new Review(3, "Ok"));
         ReviewList.add(new Review(4, "Satisfied"));
         ReviewList.add(new Review(5, "Very Satisfied"));
+    }
+    // create predefine data end
+    
+    public void selectCustomerInput() {
+        do {
+            int counter = 1;
+            System.out.println("");
+            System.out.println("Select customer by id");
+            for (final Customer cus : CusList) {
+                System.out.println(counter++ + "." + cus.getCusName());
+            }
+            Scanner cusSelectInput = new Scanner(System.in);
+            System.out.println("");
+            System.out.print("Select Custmer: ");
+            int selectedCusId = cusSelectInput.nextInt();
+            cusSelectInput.nextLine();
+            counter = 1;
+            for (final Customer cus : CusList) {
+                if (counter == selectedCusId) {
+                    selectedCustomer = cus;
+                }
+                counter++;
+            }
+        } while (selectedCustomer == null);
+
+        displaySelectedCustomer();
+    }
+
+    public void displaySelectedCustomer() {
+        if (selectedCustomer != null) {
+            System.out.println("");
+            System.out.println("***************************** Selected Customer Information *************************");
+
+            System.out.println("Customer Id: " + selectedCustomer.getcId());
+            System.out.println("Customer Name: " + selectedCustomer.getCusName());
+
+            System.out.println("***************************** Selected Customer Information *************************");
+            System.out.println("");
+        }
+    }
+
+    public void invalidInputMessage(int selection, int maxSelection) {
+        if (selection != 0 && selection > maxSelection) {
+            System.out.println("");
+            System.out.println("Please enter valid input. Try Again!!!");
+            System.out.println("");
+        }
     }
 }
