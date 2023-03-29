@@ -11,30 +11,49 @@ import java.util.Date;
  *
  * @author Darshan
  */
-public class BookedFitnessLesson {
+public class BookedFitnessLesson implements Comparable<BookedFitnessLesson>{
 
+    private int bId;
     private FitnessLessonAvailable fla;
-    private Customer cus;
     private Date bookedDate;
     private boolean isCompleted;
 
-    public BookedFitnessLesson(FitnessLessonAvailable fla, Customer cus, Date bookedDate, boolean isCompleted) {
+    public BookedFitnessLesson(int bId, FitnessLessonAvailable fla, Date bookedDate, boolean isCompleted) {
+        this.bId = bId;
         this.fla = fla;
-        this.cus = cus;
         this.bookedDate = bookedDate;
         this.isCompleted = isCompleted;
+    }
+    
+    /**
+     * Returns an Integer within collection to get the max Id
+     *
+     * @param p Patient object use for get id
+     */
+    @Override
+    public int compareTo(BookedFitnessLesson bFL) {
+        if (this.getbId()> bFL.getbId()) {
+            return 1;
+        } else if (this.getbId()< bFL.getbId()) {
+            return -1;
+        }
+        return 0;
+    }
+
+    public int getbId() {
+        return bId;
     }
 
     public FitnessLessonAvailable getFla() {
         return fla;
     }
 
-    public Customer getCus() {
-        return cus;
-    }
-
     public Date getBookedDate() {
         return bookedDate;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     public boolean isIsCompleted() {

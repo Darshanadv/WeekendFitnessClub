@@ -12,21 +12,15 @@ import java.util.Date;
  * @author Darshan
  */
 public class CustomerReview {
-
-    private Customer cus;
+    
     private FitnessLesson fitLes;
     private Review review;
     private Date dateOfReview;
 
-    public CustomerReview(Customer cus, FitnessLesson fitLes, Review review, Date dateOfReview) {
-        this.cus = cus;
+    public CustomerReview(FitnessLesson fitLes, Review review, Date dateOfReview) {
         this.fitLes = fitLes;
         this.review = review;
         this.dateOfReview = dateOfReview;
-    }
-
-    public Customer getCus() {
-        return cus;
     }
 
     public FitnessLesson getFitLes() {

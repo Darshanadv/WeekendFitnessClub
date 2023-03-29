@@ -16,11 +16,13 @@ public class FitnessLessonAvailable {
     private int flaId;
     private FitnessLesson fitLes;
     private Date dateOfAvailable;
+    private boolean isBooked;
 
-    public FitnessLessonAvailable(int flaId, FitnessLesson fitLes, Date dateOfAvailable) {
+    public FitnessLessonAvailable(int flaId, FitnessLesson fitLes, Date dateOfAvailable, boolean isBooked) {
         this.flaId = flaId;
         this.fitLes = fitLes;
         this.dateOfAvailable = dateOfAvailable;
+        this.isBooked = isBooked;
     }
 
     public int getFlaId() {
@@ -35,4 +37,11 @@ public class FitnessLessonAvailable {
         return dateOfAvailable;
     }
 
+    public void setIsBooked(boolean isBooked) {
+        this.isBooked = isBooked;
+    }
+
+    public boolean isIsBooked() {
+        return isBooked;
+    }
 }

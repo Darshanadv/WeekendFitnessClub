@@ -27,7 +27,7 @@ public class WeekendFitnessClub {
         int selection = 0;
         int maxSelection = 7;
         try {
-            fitnessControllerObj.displaySelectedCustomer();
+            fitnessControllerObj.onDisplaySelectedCustomer();
             do {
 
                 fitnessControllerObj.invalidInputMessage(selection, maxSelection);
@@ -48,15 +48,15 @@ public class WeekendFitnessClub {
                         selection = 0;
                         break;
                     case 2:
-//                        fitnessControllerObj.bookedLessonInput();
+                        fitnessControllerObj.bookedLessonInput();
                         selection = 0;
                         break;
                     case 3:
-//                        fitnessControllerObj.changeBookedLessonInput();
+                        fitnessControllerObj.changeBookedLessonInput();
                         selection = 0;
                         break;
                     case 4:
-//                        fitnessControllerObj.AttendBookedLessonInput();
+                        fitnessControllerObj.AttendBookedLessonInput();
                         selection = 0;
                         break;
                     case 5:
