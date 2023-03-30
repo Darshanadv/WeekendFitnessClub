@@ -15,13 +15,11 @@ public class Customer {
 
     private int cId;
     private String cusName;
-    private List<CustomerReview> reviewList;
     private final List<BookedFitnessLesson> bookedFitnessLessonList;
 
-    public Customer(int cId, String cusName, List<CustomerReview> reviewList, List<BookedFitnessLesson> bookedFitnessLessonsList) {
+    public Customer(int cId, String cusName, List<BookedFitnessLesson> bookedFitnessLessonsList) {
         this.cId = cId;
         this.cusName = cusName;
-        this.reviewList = reviewList;
         this.bookedFitnessLessonList = bookedFitnessLessonsList;
     }
 

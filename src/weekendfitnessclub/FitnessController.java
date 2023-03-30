@@ -48,11 +48,11 @@ public class FitnessController {
 
     // create predefine data start
     private void createCustomer() {
-        CusList.add(new Customer(1, "Darshan", new ArrayList<>(), new ArrayList<>()));
-        CusList.add(new Customer(2, "Maya", new ArrayList<>(), new ArrayList<>()));
-        CusList.add(new Customer(3, "Evie", new ArrayList<>(), new ArrayList<>()));
-        CusList.add(new Customer(4, "Srujal", new ArrayList<>(), new ArrayList<>()));
-        CusList.add(new Customer(5, "Kamal", new ArrayList<>(), new ArrayList<>()));
+        CusList.add(new Customer(1, "Darshan", new ArrayList<>()));
+        CusList.add(new Customer(2, "Maya", new ArrayList<>()));
+        CusList.add(new Customer(3, "Evie", new ArrayList<>()));
+        CusList.add(new Customer(4, "Srujal", new ArrayList<>()));
+        CusList.add(new Customer(5, "Kamal", new ArrayList<>()));
     }
 
     private void createFitnessLesson() {
@@ -332,7 +332,7 @@ public class FitnessController {
         int counter = 1;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (final BookedFitnessLesson bookedFitLess : selectedCustomer.getBookedFitnessLessonList()) {
-            if (!bookedFitLess.isIsCompleted()) {
+            if (!bookedFitLess.isCompleted()) {
                 System.out.println(counter++);
                 System.out.println("Fitness Name: " + bookedFitLess.getFla().getFitLes().getFitnessName());
                 System.out.println("Fitness Price: £" + bookedFitLess.getFla().getFitLes().getPrice() + "/hour");
@@ -353,7 +353,7 @@ public class FitnessController {
             selectInput.nextLine();
             counter = 1;
             for (final BookedFitnessLesson bookedFitLess : selectedCustomer.getBookedFitnessLessonList()) {
-                if (!bookedFitLess.isIsCompleted()) {
+                if (!bookedFitLess.isCompleted()) {
                     counter++;
                     if (selectedInput == counter) {
                         selectedTempBookedLesson = bookedFitLess;
@@ -375,17 +375,18 @@ public class FitnessController {
         System.out.println("Hello " + selectedCustomer.getCusName());
         System.out.println("");
 
-        if (selectedCustomer.getBookedFitnessLessonList().isEmpty()) {
+        if (!selectedCustomer.getBookedFitnessLessonList().stream().anyMatch(obj -> !obj.isCompleted())) {
             System.out.println("No Booking found");
             System.out.println("");
             return;
         }
+
         System.out.println("Your Bookings:");
         System.out.println("");
-        int counter = 1;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for (final BookedFitnessLesson bookedFitLess : selectedCustomer.getBookedFitnessLessonList()) {
-            if (!bookedFitLess.isIsCompleted()) {
+            if (!bookedFitLess.isCompleted()) {
+                System.out.println("-----------------------------");
                 System.out.println("Booking id: :" + bookedFitLess.getbId());
                 System.out.println("Fitness Name: " + bookedFitLess.getFla().getFitLes().getFitnessName());
                 System.out.println("Fitness Price: £" + bookedFitLess.getFla().getFitLes().getPrice() + "/hour");
@@ -396,31 +397,74 @@ public class FitnessController {
 
         System.out.println("");
         int selectedInput = 0;
+        BookedFitnessLesson selectedBooking = null;
         do {
 
             Scanner selectInput = new Scanner(System.in);
             System.out.println("");
-            System.out.println("Y for Go Back");
-            System.out.println("Select booking id to attend: ");
+            System.out.println("Number 0 for Go Back");
+            System.out.print("Select booking id to attend: ");
             selectedInput = selectInput.nextInt();
-            selectInput.nextLine();
-            if (selectedInput >= 0) {
+            if (selectedInput > 0) {
                 System.out.println("Selected input: " + selectedInput);
                 for (final BookedFitnessLesson bookedFitLess : selectedCustomer.getBookedFitnessLessonList()) {
-                    if (!bookedFitLess.isIsCompleted()) {
-                        System.out.println("counter value: " + counter);
+                    if (!bookedFitLess.isCompleted()) {
                         if (selectedInput == bookedFitLess.getbId()) {
                             selectedCustomer.onConfirmBookingById(selectedInput);
+                            for (FitnessLessonAvailable fla : FitLessAvailableList) {
+                                if (fla.getFlaId() == bookedFitLess.getFla().getFlaId()) {
+                                    fla.setIsBooked(false);
+                                    FitLessAvailableList.set(FitLessAvailableList.indexOf(fla), fla);
+                                }
+                            }
+                            selectedBooking = bookedFitLess;
                             System.out.println("You have successfully attend the fitness class");
                         }
-                        counter++;
                     }
+                }
+                boolean isRated = custmerRating(selectedBooking);
+                if (isRated) {
+                    System.out.println("Thank you for rating...");
                 }
             }
 
-        } while (selectedInput <= 0);
+        } while (selectedInput < 0);
 
         System.out.println("");
+    }
+
+    private boolean custmerRating(BookedFitnessLesson bookedFitLess) {
+        System.out.println("");
+        System.out.println("Please rate the fitenss experiance.");
+        int selectedInput = 0;
+        int maxSelection = 6;
+        boolean isRated = false;
+        do {
+            invalidInputMessage(selectedInput, maxSelection);
+            for (Review review : ReviewList) {
+                System.out.println(review.getrId() + ". " + review.getReviewName());
+            }
+            System.out.println(maxSelection + ". Go back (Do not want to rate)");
+
+            Scanner selectInput = new Scanner(System.in);
+            System.out.println("");
+            System.out.print("Rate by number: ");
+            selectedInput = selectInput.nextInt();
+
+            for (Review review : ReviewList) {
+                if (review.getrId() == selectedInput) {
+                    selectedCustomer.getBookedFitnessLessonList().stream().map((t) -> {
+                        if (t.getbId() == bookedFitLess.getbId()) {
+                            t.setReview(review);
+                        }
+                        return t;
+                    });
+                }
+            }
+
+        } while (selectedInput <= 0 || selectedInput > maxSelection);
+
+        return isRated;
     }
 
     public void invalidInputMessage(int selection, int maxSelection) {

@@ -16,13 +16,14 @@ public class BookedFitnessLesson implements Comparable<BookedFitnessLesson>{
     private int bId;
     private FitnessLessonAvailable fla;
     private Date bookedDate;
-    private boolean isCompleted;
+    private Review review;
+    private boolean completed;
 
-    public BookedFitnessLesson(int bId, FitnessLessonAvailable fla, Date bookedDate, boolean isCompleted) {
+    public BookedFitnessLesson(int bId, FitnessLessonAvailable fla, Date bookedDate, boolean completed) {
         this.bId = bId;
         this.fla = fla;
         this.bookedDate = bookedDate;
-        this.isCompleted = isCompleted;
+        this.completed = completed;
     }
     
     /**
@@ -52,11 +53,21 @@ public class BookedFitnessLesson implements Comparable<BookedFitnessLesson>{
         return bookedDate;
     }
 
-    public void setIsCompleted(boolean isCompleted) {
-        this.isCompleted = isCompleted;
+    public void setIsCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    public boolean isIsCompleted() {
-        return isCompleted;
+    public boolean isCompleted() {
+        return completed;
     }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
+
+    public Review getReview() {
+        return review;
+    }
+    
+    
 }
