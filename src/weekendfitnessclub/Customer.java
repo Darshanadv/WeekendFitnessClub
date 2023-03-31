@@ -15,7 +15,7 @@ public class Customer {
 
     private int cId;
     private String cusName;
-    private final List<BookedFitnessLesson> bookedFitnessLessonList;
+    private List<BookedFitnessLesson> bookedFitnessLessonList;
 
     public Customer(int cId, String cusName, List<BookedFitnessLesson> bookedFitnessLessonsList) {
         this.cId = cId;
@@ -34,6 +34,10 @@ public class Customer {
     public boolean addBookedFitnessLessonsList(BookedFitnessLesson bfl) {
         bookedFitnessLessonList.add(bfl);
         return true;
+    }
+
+    public void setBookedFitnessLessonList(List<BookedFitnessLesson> bookedFitLessList) {
+        this.bookedFitnessLessonList = bookedFitLessList;
     }
 
     public List<BookedFitnessLesson> getBookedFitnessLessonList() {

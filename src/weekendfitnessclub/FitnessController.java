@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 public class FitnessController {
 
     // create intialize varibale and data
-    private final List<Customer> CusList;
+    private List<Customer> CusList;
     private final List<FitnessLesson> FitLessList;
     private final List<FitnessLessonAvailable> FitLessAvailableList;
     private final List<Review> ReviewList;
@@ -225,6 +226,7 @@ public class FitnessController {
                         fitLesAva.setIsBooked(true);
                         selectedFitenessAvailable = fitLesAva;
                         selectedCustomer.addBookedFitnessLessonsList(new BookedFitnessLesson(getMaxBookingId(), fitLesAva, new Date(), false));
+                        updateCustomer(selectedCustomer);
                     }
                 }
 
@@ -252,6 +254,51 @@ public class FitnessController {
             return bookedFitLessMaxId.getbId() + 1;
         }
         return 1;
+    }
+
+    private boolean customerRating(BookedFitnessLesson bookedFitLess) {
+        System.out.println("");
+        System.out.println("Please rate the fitenss experiance.");
+        int selectedInput = 0;
+        int maxSelection = 6;
+        boolean isRated = false;
+        do {
+            invalidInputMessage(selectedInput, maxSelection);
+            for (Review review : ReviewList) {
+                System.out.println(review.getrId() + ". " + review.getReviewName());
+            }
+            System.out.println(maxSelection + ". Go back (Do not want to rate)");
+
+            Scanner selectInput = new Scanner(System.in);
+            System.out.println("");
+            System.out.print("Rate by number: ");
+            selectedInput = selectInput.nextInt();
+
+            for (Review review : ReviewList) {
+                if (review.getrId() == selectedInput) {
+                    selectedCustomer.setBookedFitnessLessonList(selectedCustomer.getBookedFitnessLessonList().stream().map((t) -> {
+                        if (t.getbId() == bookedFitLess.getbId()) {
+                            t.setReview(review);
+                        }
+                        return t;
+                    }).collect(Collectors.toList()));
+                    updateCustomer(selectedCustomer);
+//                    .collect(Collectors.toList())
+                }
+            }
+
+        } while (selectedInput <= 0 || selectedInput > maxSelection);
+
+        return isRated;
+    }
+
+    private void updateCustomer(Customer cus) {
+        CusList = CusList.stream().map((t) -> {
+            if (t.getcId() == cus.getcId()) {
+                t = cus;
+            }
+            return t;
+        }).collect(Collectors.toList());
     }
 
     public void onDisplaySelectedCustomer() {
@@ -411,6 +458,7 @@ public class FitnessController {
                     if (!bookedFitLess.isCompleted()) {
                         if (selectedInput == bookedFitLess.getbId()) {
                             selectedCustomer.onConfirmBookingById(selectedInput);
+                            updateCustomer(selectedCustomer);
                             for (FitnessLessonAvailable fla : FitLessAvailableList) {
                                 if (fla.getFlaId() == bookedFitLess.getFla().getFlaId()) {
                                     fla.setIsBooked(false);
@@ -422,7 +470,7 @@ public class FitnessController {
                         }
                     }
                 }
-                boolean isRated = custmerRating(selectedBooking);
+                boolean isRated = customerRating(selectedBooking);
                 if (isRated) {
                     System.out.println("Thank you for rating...");
                 }
@@ -433,38 +481,46 @@ public class FitnessController {
         System.out.println("");
     }
 
-    private boolean custmerRating(BookedFitnessLesson bookedFitLess) {
-        System.out.println("");
-        System.out.println("Please rate the fitenss experiance.");
-        int selectedInput = 0;
-        int maxSelection = 6;
-        boolean isRated = false;
-        do {
-            invalidInputMessage(selectedInput, maxSelection);
-            for (Review review : ReviewList) {
-                System.out.println(review.getrId() + ". " + review.getReviewName());
-            }
-            System.out.println(maxSelection + ". Go back (Do not want to rate)");
+    public void printReport1() {
+        List<Report1> report1List = new ArrayList<>();
 
-            Scanner selectInput = new Scanner(System.in);
-            System.out.println("");
-            System.out.print("Rate by number: ");
-            selectedInput = selectInput.nextInt();
-
-            for (Review review : ReviewList) {
-                if (review.getrId() == selectedInput) {
-                    selectedCustomer.getBookedFitnessLessonList().stream().map((t) -> {
-                        if (t.getbId() == bookedFitLess.getbId()) {
-                            t.setReview(review);
-                        }
-                        return t;
+        CusList.forEach((cus) -> {
+            cus.getBookedFitnessLessonList().stream().filter((bookedFitLess) -> (bookedFitLess.isCompleted())).forEachOrdered((bookedFitLess) -> {
+                if (report1List.stream().anyMatch(obj -> obj.getDateOfAvailable() == bookedFitLess.getFla().getDateOfAvailable())) {
+                    report1List.stream().filter((report) -> (report.getDateOfAvailable() == bookedFitLess.getFla().getDateOfAvailable())).map((report) -> {
+                        report.addCustomer();
+                        return report;
+                    }).map((report) -> {
+                        report.addReviewInList(bookedFitLess.getReview());
+                        return report;
+                    }).forEachOrdered((report) -> {
+                        report1List.set(report1List.indexOf(report), report);
                     });
+                } else {
+                    List<Review> reviewList = new ArrayList<>();
+                    reviewList.add(bookedFitLess.getReview());
+                    report1List.add(new Report1(1, bookedFitLess.getFla(), bookedFitLess.getFla().getDateOfAvailable(), reviewList));
                 }
+            });
+        });
+        if (report1List.isEmpty()) {
+            System.out.println("");
+            System.out.println("No report found");
+            System.out.println("");
+            return;
+        } else {
+            System.out.println("");
+            System.out.println("****************** Report 1 Start ********************************************");
+            System.out.println("");
+            int counter = 0;
+            for (Report1 r1 : report1List) {
+                r1.printReport(++counter);
             }
+            System.out.println("");
+            System.out.println("****************** Report 1 End ********************************************");
+            System.out.println("");
+        }
 
-        } while (selectedInput <= 0 || selectedInput > maxSelection);
-
-        return isRated;
     }
 
     public void invalidInputMessage(int selection, int maxSelection) {
