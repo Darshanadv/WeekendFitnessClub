@@ -66,7 +66,7 @@ public class Report1 {
     }
 
     public void printReport(int counter) {
-        System.out.print(counter + ". ");
+        System.out.println(counter + ". ");
         System.out.println("Fitness Date: " + dateFormat.format(getDateOfAvailable()));
         System.out.println("Fitness Name: " + getFitnessLessAva().getFitLes().getFitnessName());
         System.out.println("Average Rating: " + String.format("%.2f", calAverageRating()));

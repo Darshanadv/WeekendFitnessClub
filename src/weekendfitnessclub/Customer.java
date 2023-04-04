@@ -6,6 +6,7 @@
 package weekendfitnessclub;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -56,4 +57,12 @@ public class Customer {
 
         return isFound;
     }
+
+    public boolean isAnyBookingFound() {
+        return getBookedFitnessLessonList().stream().anyMatch(obj -> !obj.isCompleted());
+    }
+    
+    public List<BookedFitnessLesson> getIncompleteBookedFitenssLessonList() {
+        return getBookedFitnessLessonList().stream().filter(bookedFitLess -> !bookedFitLess.isCompleted()).collect(Collectors.toList());
+    } 
 }

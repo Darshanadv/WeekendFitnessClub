@@ -16,13 +16,13 @@ public class FitnessLessonAvailable {
     private int flaId;
     private FitnessLesson fitLes;
     private Date dateOfAvailable;
-    private boolean isBooked;
+    private int seatAvailable;
 
-    public FitnessLessonAvailable(int flaId, FitnessLesson fitLes, Date dateOfAvailable, boolean isBooked) {
+    public FitnessLessonAvailable(int flaId, FitnessLesson fitLes, Date dateOfAvailable, int seatAvailable) {
         this.flaId = flaId;
         this.fitLes = fitLes;
         this.dateOfAvailable = dateOfAvailable;
-        this.isBooked = isBooked;
+        this.seatAvailable = seatAvailable;
     }
 
     public int getFlaId() {
@@ -37,11 +37,18 @@ public class FitnessLessonAvailable {
         return dateOfAvailable;
     }
 
-    public void setIsBooked(boolean isBooked) {
-        this.isBooked = isBooked;
+    public int getSeatAvailable() {
+        return seatAvailable;
     }
 
-    public boolean isIsBooked() {
-        return isBooked;
+    public void removeOneSeatAvailable() {
+        seatAvailable -= 1;
+        if (seatAvailable < 0) {
+            seatAvailable = 0;
+        }
+    }
+
+    public void addOneSeatAvailable() {
+        seatAvailable += 1;
     }
 }

@@ -64,7 +64,7 @@ public class WeekendFitnessClub {
                         selection = 0;
                         break;
                     case 6:
-//                        fitnessControllerObj.printReport2();
+                        fitnessControllerObj.printReport2();
                         selection = 0;
                         break;
                     default:
