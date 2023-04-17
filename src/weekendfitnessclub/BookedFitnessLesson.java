@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class BookedFitnessLesson implements Comparable<BookedFitnessLesson>{
 
-    private int bId;
+    private final int bId;
     private FitnessLessonAvailable fla;
-    private Date bookedDate;
+    private final Date bookedDate;
     private Review review;
     private boolean completed;
 
@@ -29,7 +29,7 @@ public class BookedFitnessLesson implements Comparable<BookedFitnessLesson>{
     /**
      * Returns an Integer within collection to get the max Id
      *
-     * @param p Patient object use for get id
+     * @param bFL BookedFitnessLesson object use for get id
      */
     @Override
     public int compareTo(BookedFitnessLesson bFL) {

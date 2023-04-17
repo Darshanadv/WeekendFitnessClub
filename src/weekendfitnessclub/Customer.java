@@ -5,6 +5,7 @@
  */
 package weekendfitnessclub;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
  */
 public class Customer {
 
-    private int cId;
-    private String cusName;
+    private final int cId;
+    private final String cusName;
     private List<BookedFitnessLesson> bookedFitnessLessonList;
 
-    public Customer(int cId, String cusName, List<BookedFitnessLesson> bookedFitnessLessonsList) {
+    public Customer(int cId, String cusName) {
         this.cId = cId;
         this.cusName = cusName;
-        this.bookedFitnessLessonList = bookedFitnessLessonsList;
+        this.bookedFitnessLessonList = new ArrayList<>();
     }
 
     public int getcId() {
@@ -61,8 +62,8 @@ public class Customer {
     public boolean isAnyBookingFound() {
         return getBookedFitnessLessonList().stream().anyMatch(obj -> !obj.isCompleted());
     }
-    
+
     public List<BookedFitnessLesson> getIncompleteBookedFitenssLessonList() {
         return getBookedFitnessLessonList().stream().filter(bookedFitLess -> !bookedFitLess.isCompleted()).collect(Collectors.toList());
-    } 
+    }
 }

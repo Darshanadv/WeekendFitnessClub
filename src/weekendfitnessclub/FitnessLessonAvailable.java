@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class FitnessLessonAvailable {
 
-    private int flaId;
+    private final int flaId;
     private FitnessLesson fitLes;
-    private Date dateOfAvailable;
+    private final Date dateOfAvailable;
     private int seatAvailable;
 
     public FitnessLessonAvailable(int flaId, FitnessLesson fitLes, Date dateOfAvailable, int seatAvailable) {

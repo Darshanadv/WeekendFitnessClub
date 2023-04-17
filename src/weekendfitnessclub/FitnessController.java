@@ -50,11 +50,11 @@ public class FitnessController {
 
     // create predefine data start
     private void createCustomer() {
-        CusList.add(new Customer(1, "Darshan", new ArrayList<>()));
-        CusList.add(new Customer(2, "Maya", new ArrayList<>()));
-        CusList.add(new Customer(3, "Evie", new ArrayList<>()));
-        CusList.add(new Customer(4, "Srujal", new ArrayList<>()));
-        CusList.add(new Customer(5, "Kamal", new ArrayList<>()));
+        CusList.add(new Customer(1, "Darshan"));
+        CusList.add(new Customer(2, "Maya"));
+        CusList.add(new Customer(3, "Evie"));
+        CusList.add(new Customer(4, "Srujal"));
+        CusList.add(new Customer(5, "Kamal"));
     }
 
     private void createFitnessLesson() {
@@ -67,7 +67,6 @@ public class FitnessController {
     }
 
     private void createFitnessLessonAvailable() {
-//        Calendar cal = Calendar.getInstance();
         try {
             int min = 1;
             int max = 20;
@@ -127,7 +126,7 @@ public class FitnessController {
     // create predefine data end
 
     private void displayAllFitnessLessonAvailableBy(String type) {
-        if (type == "day") {
+        if ("day".equals(type)) {
             Scanner scannerInput = new Scanner(System.in);
             int selection = 0;
             int maxSelection = 3;
@@ -191,7 +190,7 @@ public class FitnessController {
 
                 final List<FitnessLessonAvailable> filterFitLessAvailableList = new ArrayList<>();
                 for (final FitnessLessonAvailable fitLesAva : FitLessAvailableList) {
-                    if (fitLesAva.getSeatAvailable() > 0 && fitLesAva.getFitLes().getFitnessName() == selectedFitLess.getFitnessName()) {
+                    if (fitLesAva.getSeatAvailable() > 0 && fitLesAva.getFitLes().getFitnessName().equals(selectedFitLess.getFitnessName())) {
                         filterFitLessAvailableList.add(fitLesAva);
                     }
                 }
@@ -503,7 +502,6 @@ public class FitnessController {
             System.out.println("");
             System.out.println("No report found");
             System.out.println("");
-            return;
         } else {
             System.out.println("");
             System.out.println("****************** Report 1 Start ********************************************");
@@ -517,7 +515,6 @@ public class FitnessController {
             System.out.println("****************** Report 1 End ********************************************");
             System.out.println("");
         }
-
     }
 
     public void printReport2() {
@@ -541,7 +538,6 @@ public class FitnessController {
             System.out.println("");
             System.out.println("No report found");
             System.out.println("");
-            return;
         } else {
             System.out.println("");
             System.out.println("****************** Report 2 Start ********************************************");

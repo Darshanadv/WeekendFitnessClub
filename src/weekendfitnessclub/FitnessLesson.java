@@ -11,9 +11,9 @@ package weekendfitnessclub;
  */
 public class FitnessLesson {
 
-    private int fId;
-    private String fitnessName;
-    private int price;
+    private final int fId;
+    private final String fitnessName;
+    private final int price;
 
     public FitnessLesson(int fId, String fitnessName, int price) {
         this.fId = fId;

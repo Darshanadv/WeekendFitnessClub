@@ -11,8 +11,8 @@ package weekendfitnessclub;
  */
 public class Review {
 
-    private int rId;
-    private String reviewName;
+    private final int rId;
+    private final String reviewName;
 
     public Review(int rId, String reviewName) {
         this.rId = rId;
